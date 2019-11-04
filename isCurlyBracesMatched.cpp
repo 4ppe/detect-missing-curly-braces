@@ -1,6 +1,3 @@
-
-/* ALPER BABADAĞ 365256*/
-
 #include "Linked Stack.h"
 #include <iostream>						// I/O definitions
 #include <vector>
@@ -194,7 +191,5 @@ int main()
 	 {
 	 	cout<<endl<<"NOT MATCHED"<<endl;
 	 }
-	
-	::getchar();
 	return 0;
 }
