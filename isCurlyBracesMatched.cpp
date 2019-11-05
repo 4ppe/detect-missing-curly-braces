@@ -1,10 +1,10 @@
 #include "Linked Stack.h"
-#include <iostream>						// I/O definitions
+#include <iostream>				// I/O definitions
 #include <vector>
 #include <fstream>
 #include <string>
 
-using namespace std;					// make std:: accessible
+using namespace std;				// make std:: accessible
 
 int countSpaces(string& inputStr);
 void print(std::vector<string>& input);
@@ -18,66 +18,66 @@ vector<string> getCurlyBrace()
 
 	int lineCount = 0;
 	string line;
-    string str;
+    	string str;
 	int spaces = 0;
 
 	while (getline(fin, line))				// read until end of file 
 	{
 		lineCount++;
-        str = "";
+        	str = "";
 
-		int bOpen = line.find("{", 0);				// scan open curly braces
-		int bClose = line.find("}", 0);             // scan closed curly braces
+		int bOpen = line.find("{", 0);			// scan open curly braces
+		int bClose = line.find("}", 0);             	// scan closed curly braces
 
-        if (bOpen > -1)								// Found open braces
-        {   
-			spaces = countSpaces(line);       // get spaces from line
-            for (int i = 0; i < spaces; i++)
-            {
-                str = str + " ";
-            }
-            str = str + "{"+to_string(lineCount);	// add line number to braces vector
-            braces.push_back(str);
+		if (bOpen > -1)					// Found open braces
+		{   
+			spaces = countSpaces(line);       	// get spaces from line
+			for (int i = 0; i < spaces; i++)
+			{
+				str = str + " ";
+			}
+			str = str + "{"+to_string(lineCount);	// add line number to braces vector
+			braces.push_back(str);
 
-            str = "";
+			str = "";
 			spaces = 0;
-        }// End if
+		}// End if
 
-        if (bClose > -1)
-        {
+		if (bClose > -1)
+		{
 			spaces = countSpaces(line);
-            for (int i = 0; i < spaces; i++)
-            {
-                str = str + " ";
-            }
-            str = str + "}" + to_string(lineCount); 
+			for (int i = 0; i < spaces; i++)
+			{
+				str = str + " ";
+			}
+			str = str + "}" + to_string(lineCount); 
 
-            braces.push_back(str);
+			braces.push_back(str);
 
-            str = "";
+			str = "";
 			spaces = 0;
-        }// End if
+		}// End if
         
 	}// End while
-	return braces;		// return vector of braces
+	return braces;						// return vector of braces
 }
 
 bool isCurlyBracesMatched(const vector<string>& braces) 
 {	
 	string wrongCurlyBraces;
-	bool returnValue = true;			//To check the return value	
+	bool returnValue = true;				//To check the return value	
 	string str;
 	int bOpen;
 	int bClose;
-	LinkedStack S;													// stack for opening braces
-	typedef vector<string>::const_iterator Iter;					// iterator type
+	LinkedStack S;						// stack for opening braces
+	typedef vector<string>::const_iterator Iter;		// iterator type
 	// iterate through vector
 	for (Iter p = braces.begin(); p != braces.end(); ++p) 
 	{ 	
 	
 		bOpen = p->find("{",0);
 
-		if (bOpen > -1)			// Opening curly braces ?
+		if (bOpen > -1)			// is curly braces opened ?
 		{
 			S.push(*p);
 		}
@@ -93,46 +93,51 @@ bool isCurlyBracesMatched(const vector<string>& braces)
 			else
 			{
 				bClose = p->find("}",0);
-				string tempStr = S.top();  // store the string at the top of the stack
-				int len = countSpaces(tempStr); // get spaces length from the top of the stack 
+				string tempStr = S.top();  		// store the string at the top of the stack
+				int len = countSpaces(tempStr); 	// get spaces length from the top of the stack 
 
 				if (( bClose > -1 && len == bClose ))
 				{
-					S.pop();	//pop if opened braces are closed
+					S.pop();			//pop if opened braces are closed
 				}
 				else if( bClose > -1 && bClose > len)
 				{	
 					wrongCurlyBraces = *p;
+					
 					// Satirda acilmayan bir parantez kapatilmaya calisilmis
 					cout<<"Attempts to close an unopened parenthesis in line "<<getNumberOfLine(wrongCurlyBraces)<<endl; 
-					returnValue = false;  //sets false the return if spaces do not match
+					
+					returnValue = false;  		//sets false the return if spaces do not match
+					
 				}else if (bClose > -1 && bClose < len)
 				{	
 					wrongCurlyBraces = S.top();
+					
 					// Satırda parantez açılmış ama kapatılmamış
 					cout<<"Attempts to open an unclosed parentheses in line "<<getNumberOfLine(wrongCurlyBraces)<<endl;
-					S.pop();   //error found and used pop for continue the search
-					p--;  		//to check again current p
-					returnValue = false;  //sets false the return if spaces do not match
+					
+					S.pop();   			//error found and used pop for continue the search
+					p--;  				//to check again current p
+					returnValue = false;  		//sets false the return if spaces do not match
 				}	
 			}
 		}
 	} 
 	
-	while (!S.empty())		//if the stack is not empty
+	while (!S.empty())			//if the stack is not empty
 	{	
 		wrongCurlyBraces = S.top();
 		// Satırda parantez açılmış ama kapatılmamış
 		cout<<"Attempts to open an unclosed parentheses in line "<<getNumberOfLine(wrongCurlyBraces)<<endl;
 		S.pop();
-		returnValue = false;	//sets false the return if the stack is not empty
+		returnValue = false;		//sets false the return if the stack is not empty
 	}// end while
 	
 	return returnValue;	
 } 
 
 
-string getNumberOfLine(string& inputStr)  // Gets number of the braces line for add braces vector
+string getNumberOfLine(string& inputStr)  	// Gets number of the braces line for add braces vector
 {
 	int len;
 	int bOpen = -1;
@@ -160,11 +165,11 @@ string getNumberOfLine(string& inputStr)  // Gets number of the braces line for 
 }
 
 
-int countSpaces(string& inputStr) // counts the spaces of the entered string up to curly braces
+int countSpaces(string& inputStr) 	// counts the spaces of the entered string up to curly braces
 {
    	int num = 0;
    	char space = ' ';
-    constexpr char TAB = '\t' ;
+    	const char TAB = '\t' ;
 	for (int i = 0; i < inputStr.length()  ; i++)
 	{
 
