@@ -64,74 +64,73 @@ vector<string> getCurlyBrace()
 
 bool isCurlyBracesMatched(const vector<string> &braces)
 {
-    string wrongCurlyBraces;
-    bool returnValue = true; //To check the return value
-    string str;
-    int bOpen;
-    int bClose;
-    LinkedStack S;								 // stack for opening braces
-    typedef vector<string>::const_iterator Iter; // iterator type
-    // iterate through vector
-    for (Iter p = braces.begin(); p != braces.end(); ++p)
-    {
+	string wrongCurlyBraces;
+	bool returnValue = true; //To check the return value
+	string str;
+	int bOpen;
+	int bClose;
+	LinkedStack S;								 // stack for opening braces
+	typedef vector<string>::const_iterator Iter; // iterator type
+	// iterate through vector
+	for (Iter p = braces.begin(); p != braces.end(); ++p)
+	{
 
-        bOpen = p->find("{", 0);
+		bOpen = p->find("{", 0);
 
-        if (bOpen > -1) // is curly braces opened ?
-        {
-            S.push(*p);
-        }
-        else
-        {
-            if (S.empty())
-            {
-                wrongCurlyBraces = *p;
+		if (bOpen > -1) // is curly braces opened ?
+		{
+			S.push(*p);
+		}
+		else
+		{
+			if (S.empty())
+			{
+				wrongCurlyBraces = *p;
 
-                cout << "Attempts to close an unopened parenthesis in line " << getNumberOfLine(wrongCurlyBraces) << endl;
-                returnValue = false;
-            }
-            else
-            {
-                bClose = p->find("}", 0);
-                string tempStr = S.top();		// store the string at the top of the stack
-                int len = countSpaces(tempStr); // get spaces length from the top of the stack
+				cout << "Attempts to close an unopened parenthesis in line " << getNumberOfLine(wrongCurlyBraces) << endl;
+				returnValue = false;
+			}
+			else
+			{
+				bClose = p->find("}", 0);
+				string tempStr = S.top();		// store the string at the top of the stack
+				int len = countSpaces(tempStr); // get spaces length from the top of the stack
 
-                if ((bClose > -1 && len == bClose))
-                {
-                    //pop if opened braces are closed
-                    S.pop();
-                }
-                else if (bClose > -1 && bClose > len)
-                {
-                    wrongCurlyBraces = *p;
+				if ((bClose > -1 && len == bClose))
+				{
+					S.pop();					//pop if opened braces are closed
+				}
+				else if (bClose > -1 && bClose > len)
+				{
+					wrongCurlyBraces = *p;
 
-                    cout << "Attempts to close an unopened parenthesis in line " << getNumberOfLine(wrongCurlyBraces) << endl;
+					cout << "Attempts to close an unopened parenthesis in line " << getNumberOfLine(wrongCurlyBraces) << endl;
 
-                    returnValue = false; //sets false the return if spaces do not match
-                }
-                else if (bClose > -1 && bClose < len)
-                {
-                    wrongCurlyBraces = S.top();
+					returnValue = false; //sets false the return if spaces do not match
+				}
+				else if (bClose > -1 && bClose < len)
+				{
+					wrongCurlyBraces = S.top();
 
-                    cout << "Attempts to open an unclosed parentheses in line " << getNumberOfLine(wrongCurlyBraces) << endl;
+					cout << "Attempts to open an unclosed parentheses in line " << getNumberOfLine(wrongCurlyBraces) << endl;
 
-                    S.pop();			 //error found and used pop for continue the search
-                    p--;				 //to check again current p
-                    returnValue = false; //sets false the return if spaces do not match
-                }
-            }
-        }
-    }
+					S.pop();			 //error found and used pop for continue the search
+					p--;				 //to check again current p
+					returnValue = false; //sets false the return if spaces do not match
+				}
+			}
+		}
+	}
 
-    while (!S.empty()) //if the stack is not empty
-    {
-        wrongCurlyBraces = S.top();
-        cout << "Attempts to open an unclosed parentheses in line " << getNumberOfLine(wrongCurlyBraces) << endl;
-        S.pop();
-        returnValue = false; //sets false the return if the stack is not empty
-    }
+	while (!S.empty()) //if the stack is not empty
+	{
+		wrongCurlyBraces = S.top();
+		cout << "Attempts to open an unclosed parentheses in line " << getNumberOfLine(wrongCurlyBraces) << endl;
+		S.pop();
+		returnValue = false; //sets false the return if the stack is not empty
+	}
 
-    return returnValue;
+	return returnValue;
 }
 
 string getNumberOfLine(string &inputStr) // Gets number of the braces line for add braces vector
