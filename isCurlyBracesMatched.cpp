@@ -98,8 +98,7 @@ bool isCurlyBracesMatched(const vector<string> &braces)
 
 				if ((bClose > -1 && len == bClose))
 				{
-					//pop if opened braces are closed
-					S.pop();
+					S.pop();					//pop if opened braces are closed
 				}
 				else if (bClose > -1 && bClose > len)
 				{
